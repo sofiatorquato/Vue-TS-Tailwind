@@ -1,40 +1,55 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref,computed } from 'vue'
 import Usuario from './Usuario.vue'
+import { provide } from 'vue'
+import { useFetch } from '../composables/fetch'
 
-interface Pessoa {
-  id: number
-  avatar: string
-  email: string
-  first_name: string
-  last_name: string
+const { data: pessoas, error, loading } = useFetch()
+
+const aviso = ref<string>("Em caso de dúvidas, contate o suporte");
+const idsSelecao = ref<number[]>([])
+
+
+provide("aviso", aviso);
+
+
+const adicionaSelecao = (e: number) => {
+  if (idSelecionado(e)) {
+    idsSelecao.value = idsSelecao.value.filter((x) => x !== e)
+    return;
+  }
+  idsSelecao.value.push(e);
+  
 }
 
-const pessoas = ref<Pessoa[]>([])
-
-const buscaDados = async () => {
-  const req = await fetch('https://randomuser.me/api/?results=12')
-  const response = await req.json()
-  return response.results
-}
-
-onMounted(async () => {
-  const dados = await buscaDados()
-
-  pessoas.value = dados.map((item: any, index: number) => ({
-    id: index + 1,
-    avatar: item.picture.large,
-    email: item.email,
-    first_name: item.name.first,
-    last_name: item.name.last
-  }))
+const pessoasSelecionadas = computed(() => {
+  if (!pessoas.value) return [];
+ return  pessoas.value.filter((x:any) => idSelecionado(x.id));
 })
+
+const idSelecionado = (id:number) => {
+  return idsSelecao.value.includes(id);
+ }
+
 </script>
 
 <template>
-    <div class="grid md:grid-cols-3 gap-4 p-4">
-      <Usuario
-        v-for="pessoa in pessoas" :key="pessoa.id" :first_name="pessoa.first_name" :last_name="pessoa.last_name"
-      />
+    <div class="flex justify-center items-center gap-4 flex-wrap ">
+      <span v-for="pm in pessoasSelecionadas" :key="pm.id" class="bg-blue-300 p-2 rounded-lg ">
+        {{ pm.first_name }}
+      </span>
     </div>
+
+    <div v-if="loading" class="flex justify-center items-center mt-100">
+      <h3 class="text-xl">Carregando...</h3>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-4 p-4">
+      <Usuario v-for="pessoa in pessoas" :key="pessoa.id" :pessoa :selecao="idSelecionado(pessoa.id)"
+      @selecao="adicionaSelecao" v-if="!error"/>
+      <div v-else>
+        {{ error }}
+      </div>
+    </div>
+
   </template>

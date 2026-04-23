@@ -8,12 +8,15 @@ const menus = [
 
 </script>
 
-
 <template>
-  <nav class="p-2 flex justify-between items-center bg-blue-100">Tutorial Vue
-    <ul class="flex list-none p-2 ">
-        <li v-for="menu in menus" :key="menu.id" class="underline text-blue-900 px-4"><a href="#">{{menu.nome}}</a></li>
-        
-    </ul>
+  <div class="bg-blue-200 p-3">
+    <nav class="flex justify-between items-center text-blue-900 font-bold">Tutorial Vue
+      <div>
+        <ul class="list-none p-3 flex">
+        <li v-for="menu in menus" :key="menu.id" class="underline text-blue-900 px-4 font-medium"><a href="#">{{menu.nome}}</a></li>
+        </ul>
+      </div>
   </nav>
+  </div>
+ 
 </template>

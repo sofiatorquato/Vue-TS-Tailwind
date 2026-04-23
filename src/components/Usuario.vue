@@ -1,31 +1,20 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { computed } from 'vue'
+import type { Pessoa } from '../types/Pessoa';
+import Aviso from './Aviso.vue';
 
-//4:58 - video de props
+
 interface Props{
-    first_name: string,
-    last_name: string,
+  pessoa: Pessoa,
+  selecao:boolean
+  
 }
 
 const props = defineProps<Props>()
 
-const nomeCompleto = computed(() => `${ props.first_name } ${ props.last_name }`);
+const nomeCompleto = computed(() => `${ props.pessoa.first_name } ${ props.pessoa.last_name }`);
 
-const usuario = ref<number>(0)
-
-interface Pessoa {
-  avatar: string
-  email: string
-  first_name: string
-  last_name: string
-}
-
-const pessoa = reactive<Pessoa>({
-  avatar: '',
-  email: '',
-  first_name: '',
-  last_name: ''
-})
+const emits = defineEmits(['selecao']);
 
 
 </script>
@@ -33,12 +22,16 @@ const pessoa = reactive<Pessoa>({
 <template>
     
  <div class="flex flex-col justify-center items-center">
-    <div v-for="pessoa in pessoas" :key="pessoa.id" class="bg-white rounded-xl shadow p-4 text-center">
-        <img :src="pessoa.avatar" class="w-24 h-24 rounded-full mx-auto mb-2"/>
-        <strong>{{ pessoa.first_name }} {{ pessoa.last_name }} </strong>
-        <p class="text-sm text-gray-500">{{ pessoa.email }} </p>
+  <div class="bg-white rounded-xl shadow w-60 p-4 text-center">
+        <img :src="props.pessoa.avatar" class="w-24 h-24 rounded-full mx-auto mb-2"/>
+        <strong class="truncate block w-full">{{ nomeCompleto}}</strong>
+        <p class="text-sm text-gray-500 truncate">{{ props.pessoa.email }} </p>
+        
     </div>
+    <button class="bg-blue-900 p-1 mt-2 rounded-md text-white font-medium" @click="$emit('selecao', props.pessoa.id)">{{ !selecao? "Selecionar": "Remover" }}</button>
+    <Aviso class="flex justify-center text-sm mt-2"></Aviso>
  </div>
+
  
 </template>
 
