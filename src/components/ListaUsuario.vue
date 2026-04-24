@@ -44,7 +44,7 @@ const idSelecionado = (id:number) => {
       <h3 class="text-xl">Carregando...</h3>
     </div>
 
-    <div class="grid md:grid-cols-4 gap-4 p-4">
+    <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-4 mx-20">
       <Usuario v-for="pessoa in pessoas" :key="pessoa.id" :pessoa :selecao="idSelecionado(pessoa.id)"
       @selecao="adicionaSelecao" v-if="!error"/>
       <div v-else>

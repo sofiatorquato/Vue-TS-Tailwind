@@ -16,7 +16,6 @@ const nomeCompleto = computed(() => `${ props.pessoa.first_name } ${ props.pesso
 
 const emits = defineEmits(['selecao']);
 
-
 </script>
 
 <template>
