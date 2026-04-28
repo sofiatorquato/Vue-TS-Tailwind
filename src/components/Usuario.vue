@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import type { Pessoa } from '../types/Pessoa';
 import Aviso from './Aviso.vue';
 
-
 interface Props{
   pessoa: Pessoa,
-  selecao:boolean
+  selecao?:boolean
   
 }
+
 
 const props = defineProps<Props>()
 
@@ -27,7 +27,7 @@ const emits = defineEmits(['selecao']);
         <p class="text-sm text-gray-500 truncate">{{ props.pessoa.email }} </p>
         
     </div>
-    <button class="bg-blue-900 p-1 mt-2 rounded-md text-white font-medium" @click="$emit('selecao', props.pessoa.id)">{{ !selecao? "Selecionar": "Remover" }}</button>
+    <button class="bg-blue-900 p-1 mt-2 rounded-md text-white font-medium cursor-pointer" @click="$emit('selecao', props.pessoa.id)">{{ !selecao? "Selecionar": "Remover" }}</button>
     <Aviso class="flex justify-center text-sm mt-2"></Aviso>
  </div>
 

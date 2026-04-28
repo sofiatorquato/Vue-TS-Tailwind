@@ -3,6 +3,9 @@ import { ref,computed } from 'vue'
 import Usuario from './Usuario.vue'
 import { provide } from 'vue'
 import { useFetch } from '../composables/fetch'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const { data: pessoas, error, loading } = useFetch()
 
@@ -29,7 +32,11 @@ const pessoasSelecionadas = computed(() => {
 
 const idSelecionado = (id:number) => {
   return idsSelecao.value.includes(id);
- }
+}
+
+const redirectFuncionario = (id:number) => {
+  router.push(`/equipe/${id}`)
+}
 
 </script>
 
@@ -44,11 +51,13 @@ const idSelecionado = (id:number) => {
       <h3 class="text-xl">Carregando...</h3>
     </div>
 
-    <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-4 mx-20">
-      <Usuario v-for="pessoa in pessoas" :key="pessoa.id" :pessoa :selecao="idSelecionado(pessoa.id)"
-      @selecao="adicionaSelecao" v-if="!error"/>
-      <div v-else>
-        {{ error }}
+    <div v-else class="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-4 mx-2">
+      <div v-for="pessoa in pessoas" :key="pessoa.id" v-if="!error" class="flex flex-col items-center">
+        <button class="bg-blue-500 p-1 mt-2 rounded-md text-white font-medium cursor-pointer" @click="redirectFuncionario(pessoa.id)">Ver funcionário</button>
+    
+      <Usuario :pessoa="pessoa" :selecao="idSelecionado(pessoa.id)"
+      @selecao="adicionaSelecao"/>
+
       </div>
     </div>
 

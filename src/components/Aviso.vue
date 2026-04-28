@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, type Ref } from 'vue';
 
-const aviso = inject('aviso');
-
+const aviso = inject<Ref<string>>('aviso');
 
 </script>
 
 <template>
-  <div class="">
+  <div>
 {{ aviso }}
   </div>
 </template>
