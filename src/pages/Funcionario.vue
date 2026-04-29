@@ -4,17 +4,14 @@ import { useFetch } from '../composables/fetch';
 import { useRoute } from 'vue-router';
 import { computed, ref, watch } from 'vue';
 import { useCargos } from '../store/cargos';
+import { useLogin } from '../store/login';
 
 const store = useCargos();
-
+const storeLogin = useLogin();
 const {adicionarCargos} = store;
-
 const route = useRoute();
-
 const { data, loading } = useFetch(); 
-
 const cargoSelecionado = ref<string>('');
-
 const cargos: string[] = ["Gerência", "Supervisão", "Operacional"];
 
 const pessoa = computed(() => {
@@ -40,9 +37,13 @@ watch(cargoSelecionado, (novoCargo) => {
     <option disabled value="">Selecione o cargo</option>
     <option v-for="c in cargos" :value="c" :key="c">{{ c }}</option>
   </select>
+
+  <div>
+    <button @click="storeLogin.logarUsuario(pessoa.first_name)" class="text-green-800 border border-green-800 p-2 px-15 rounded-lg hover:bg-green-800 hover:text-white cursor-pointer transition-colors">Logar</button>
+  </div>
   </div>
 
-  <div v-else class="flex justify-center items-center mt-100">
+  <div v-else class="flex justify-center items-center mt-90">
     Pessoa não encontrada
   </div>
 </template>

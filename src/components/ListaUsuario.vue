@@ -48,7 +48,7 @@ const redirectFuncionario = (id:number) => {
     </div>
 
     <div v-if="loading" class="flex justify-center items-center mt-100">
-      <h3 class="text-xl">Carregando...</h3>
+      <h3 class="text-xl text-green-700">Carregando...</h3>
     </div>
 
     <div v-else class="grid lg:grid-cols-4 md:grid-cols-2 gap-4 p-4 mx-2">
